@@ -3,10 +3,12 @@
 #define __PLAY_SCENE__
 
 #include "Scene.h"
-#include "Plane.h"
-#include "Player.h"
 #include "Button.h"
 #include "Label.h"
+#include "Trooper.h"
+#include "Detonator.h"
+#include "Wookie.h"
+#include "Background.h"
 
 class PlayScene : public Scene
 {
@@ -27,9 +29,10 @@ private:
 	
 	glm::vec2 m_mousePosition;
 
-	Plane* m_pPlaneSprite;
-	Player* m_pPlayer;
-	bool m_playerFacingRight;
+	Detonator* m_pDetonator;
+	Wookie* m_pWookie;
+	Trooper* m_pTrooper;
+	Background* m_pBackground;
 
 	// UI Items
 	Button* m_pBackButton;

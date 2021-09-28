@@ -10,6 +10,7 @@ enum GameObjectType {
 	DETONATOR,
 	WOOKIE,
 	TROOPER,
+	BACKGROUND,
 	SHIP,
 	TARGET,
 	PLAYER,
