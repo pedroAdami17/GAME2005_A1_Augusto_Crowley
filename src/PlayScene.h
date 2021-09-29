@@ -38,6 +38,28 @@ private:
 	Button* m_pBackButton;
 	Button* m_pNextButton;
 	Label* m_pInstructionsLabel;
+
+	//Variables
+	float trooperDistance = 485.0f; //Multiply it by pixels per meter scale later
+	float detonatorSpeed = 95.0f; //Multuply it by pixels per meter scale later
+	float detonatorMass = 2.2f; //This is in kiliograms so might have to change
+	float wookieX;
+	float wookieY;
+	float detonatorX;
+	float detonatorY;
+	float detonatorStartX;
+	float detonatorStartY;
+	float trooperX;
+	float trooperY;
+	float vx;
+	float vy;
+	float gameTime;
+	float throwArc = 50.0f; //Need to find the angle from the problem and store it here for now use a default value
+	float gravity = 1.0f;
+	bool launch = false;
+
+	
+
 };
 
 #endif /* defined (__PLAY_SCENE__) */

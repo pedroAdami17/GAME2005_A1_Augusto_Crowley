@@ -19,12 +19,45 @@ PlayScene::~PlayScene()
 void PlayScene::draw()
 {
 	drawDisplayList();
+	SDL_SetRenderDrawColor(Renderer::Instance().getRenderer(), 255, 0, 0, 255);
+	SDL_RenderDrawLineF(Renderer::Instance().getRenderer(), wookieX, wookieY, wookieX + vx, wookieY + vy);
+
 	SDL_SetRenderDrawColor(Renderer::Instance().getRenderer(), 255, 255, 255, 255);
 }
 
 void PlayScene::update()
 {
 	updateDisplayList();
+
+	//Set up delta time
+	float dt = 0.05f;
+
+	//Set up variables
+	wookieX = m_pWookie->getTransform()->position.x;
+	wookieY = m_pWookie->getTransform()->position.y;
+	trooperX = m_pTrooper->getTransform()->position.x;
+	trooperY = m_pTrooper->getTransform()->position.y;
+	detonatorStartX = m_pWookie->getTransform()->position.x;
+	detonatorStartY = m_pWookie->getTransform()->position.y;
+
+	//Physics done here
+	vx = cosf(-throwArc * M_PI / 180) * detonatorSpeed;
+	vy = sinf(-throwArc * M_PI / 180) * detonatorSpeed;
+
+	if (launch)
+	{
+		gameTime += dt;
+		detonatorX = detonatorStartX + detonatorSpeed * cosf(-throwArc * M_PI / 180) * gameTime;
+		detonatorY = detonatorStartY + detonatorSpeed * sinf(-throwArc * M_PI / 180) * gameTime + (0.5 * gravity * powf(gameTime, 2));
+		m_pDetonator->getTransform()->position = glm::vec2(detonatorX, detonatorY + (gravity * dt));
+	}
+	else
+	{
+		gameTime = 0.0f;
+		m_pWookie->getTransform()->position = glm::vec2(wookieX, wookieY);
+		m_pTrooper->getTransform()->position = glm::vec2(trooperX, trooperY);
+		m_pDetonator->getTransform()->position = glm::vec2(detonatorStartX, detonatorStartY);
+	}
 }
 
 void PlayScene::clean()
@@ -62,6 +95,17 @@ void PlayScene::start()
 	m_pBackground->getTransform()->position = glm::vec2(300, 300);
 	addChild(m_pBackground);
 
+	m_pWookie = new Wookie();
+	m_pWookie->getTransform()->position = glm::vec2(50, 550);
+	addChild(m_pWookie);
+
+	m_pTrooper = new Trooper();
+	m_pTrooper->getTransform()->position = glm::vec2(trooperDistance, 550);
+	addChild(m_pTrooper);
+
+	m_pDetonator = new Detonator();
+	addChild(m_pDetonator);
+
 	// Back Button
 	m_pBackButton = new Button("../Assets/textures/backButton.png", "backButton", BACK_BUTTON);
 	m_pBackButton->getTransform()->position = glm::vec2(300.0f, 400.0f);
@@ -88,7 +132,8 @@ void PlayScene::start()
 	m_pNextButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pNextButton->setActive(false);
-		TheGame::Instance().changeSceneState(END_SCENE);
+		//TheGame::Instance().changeSceneState(END_SCENE);
+		launch = true;
 	});
 
 	m_pNextButton->addEventListener(MOUSE_OVER, [&]()->void
@@ -122,9 +167,9 @@ void PlayScene::GUI_Function() const
 	
 	ImGui::Begin("Change the variables here", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoMove);
 
-	if(ImGui::Button("My Button"))
+	if(ImGui::Button("Launch"))
 	{
-		std::cout << "My Button Pressed" << std::endl;
+		
 	}
 
 	ImGui::Separator();

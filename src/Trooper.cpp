@@ -6,7 +6,7 @@
 
 Trooper::Trooper()
 {
-	TextureManager::Instance().load("../Assets/textures/Trooper.png", "Trooper");
+	TextureManager::Instance().load("../Assets/textures/Stormtrooper.png", "Trooper");
 
 	auto size = TextureManager::Instance().getTextureSize("Trooper");
 	setWidth(size.x);

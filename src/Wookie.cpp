@@ -6,7 +6,7 @@
 
 Wookie::Wookie()
 {
-	TextureManager::Instance().load("../Assets/textures/Wookie.png", "Wookie");
+	TextureManager::Instance().load("../Assets/textures/Chewbacca.png", "Wookie");
 
 	auto size = TextureManager::Instance().getTextureSize("Wookie");
 	setWidth(size.x);
