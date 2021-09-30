@@ -46,7 +46,7 @@ void StartScene::handleEvents()
 void StartScene::start()
 {
 	const SDL_Color blue = { 0, 0, 255, 255 };
-	m_pMember1NameLabel = new Label("Patrick Crowley", "Consolas", 80, blue, glm::vec2(400.0f, 40.0f));
+	m_pMember1NameLabel = new Label("Patrick Crowley", "Consolas", 70, blue, glm::vec2(400.0f, 40.0f));
 	m_pMember1NameLabel->setParent(this);
 	addChild(m_pMember1NameLabel);
 
@@ -54,15 +54,15 @@ void StartScene::start()
 	m_pMember1NumberLabel->setParent(this);
 	addChild(m_pMember1NumberLabel);
 
-	m_pMember2NameLabel = new Label("Name here", "Consolas", 80, blue, glm::vec2(400.0f, 135.0f));
+	m_pMember2NameLabel = new Label("Pedro Augusto", "Consolas", 70, blue, glm::vec2(400.0f, 135.0f));
 	m_pMember2NameLabel->setParent(this);
 	addChild(m_pMember2NameLabel);
 
-	m_pMember2NumberLabel = new Label("Student# here", "Consolas", 40, blue, glm::vec2(400.0f, 185.0f));
+	m_pMember2NumberLabel = new Label("101300796", "Consolas", 40, blue, glm::vec2(400.0f, 185.0f));
 	m_pMember2NumberLabel->setParent(this);
 	addChild(m_pMember2NumberLabel);
 
-	m_pInstructionsLabel = new Label("Press 1 to Play", "Consolas", 40, blue, glm::vec2(400.0f, 220.0f));
+	m_pInstructionsLabel = new Label("Press 1 to Play", "Consolas", 50, blue, glm::vec2(400.0f, 250.0f));
 	m_pInstructionsLabel->setParent(this);
 	addChild(m_pInstructionsLabel);
 

@@ -137,7 +137,7 @@ void PlayScene::GUI_Function()
 	
 
 	ImGui::Begin("Change the variables here.", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoMove);
-	ImGui::Text("1 pixel is equal to 2 meters");
+	ImGui::Text("1 pixel is equal to 3 meters");
 	ImGui::SliderFloat("wookieX", &wookieX, 0.0f, 775.0f, "%.3f");
 	ImGui::SliderFloat("wookieY", &wookieY, 0.0f, 550.0f, "%.3f");
 	ImGui::SliderFloat("trooperX", &trooperX, 0.0f, 775.0f, "%.3f");

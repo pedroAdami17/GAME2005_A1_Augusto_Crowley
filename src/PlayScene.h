@@ -42,9 +42,9 @@ private:
 	Label* m_pInstructionsLabel;
 
 	//Variables
-	float mtpScale = 2.0f;
-	float trooperDistance = 485.0f;
-	float detonatorSpeed = 95.0f; //Multuply it by pixels per meter scale later
+	float mtpScale = 3.0f;
+	float trooperDistance = 535.0f;
+	float detonatorSpeed = 95.0f; 
 	float detonatorMass = 2.2f;
 	float wookieX;
 	float wookieY;
