@@ -16,6 +16,11 @@ PlayScene::PlayScene()
 PlayScene::~PlayScene()
 = default;
 
+float PlayScene::meters_to_Pixels(float meters, float scaleValue)
+{
+	return meters / scaleValue;
+}
+
 void PlayScene::draw()
 {
 	drawDisplayList();
@@ -33,10 +38,6 @@ void PlayScene::update()
 	float dt = 0.05f;
 
 	//Set up variables
-	wookieX = m_pWookie->getTransform()->position.x;
-	wookieY = m_pWookie->getTransform()->position.y;
-	trooperX = m_pTrooper->getTransform()->position.x;
-	trooperY = m_pTrooper->getTransform()->position.y;
 	detonatorStartX = m_pWookie->getTransform()->position.x;
 	detonatorStartY = m_pWookie->getTransform()->position.y;
 
@@ -49,7 +50,7 @@ void PlayScene::update()
 		gameTime += dt;
 		detonatorX = detonatorStartX + detonatorSpeed * cosf(-throwArc * M_PI / 180) * gameTime;
 		detonatorY = detonatorStartY + detonatorSpeed * sinf(-throwArc * M_PI / 180) * gameTime + (0.5 * gravity * powf(gameTime, 2));
-		m_pDetonator->getTransform()->position = glm::vec2(detonatorX, detonatorY + (gravity * dt));
+		m_pDetonator->getTransform()->position = glm::vec2(detonatorX, detonatorY + (gravity * gameTime));
 	}
 	else
 	{
@@ -89,6 +90,9 @@ void PlayScene::start()
 {
 	// Set GUI Title
 	m_guiTitle = "Play Scene";
+
+	
+	
 	
 	//Set up sprites here
 	m_pBackground = new Background();
@@ -106,58 +110,23 @@ void PlayScene::start()
 	m_pDetonator = new Detonator();
 	addChild(m_pDetonator);
 
-	// Back Button
-	m_pBackButton = new Button("../Assets/textures/backButton.png", "backButton", BACK_BUTTON);
-	m_pBackButton->getTransform()->position = glm::vec2(300.0f, 400.0f);
-	m_pBackButton->addEventListener(CLICK, [&]()-> void
-	{
-		m_pBackButton->setActive(false);
-		TheGame::Instance().changeSceneState(START_SCENE);
-	});
-
-	m_pBackButton->addEventListener(MOUSE_OVER, [&]()->void
-	{
-		m_pBackButton->setAlpha(128);
-	});
-
-	m_pBackButton->addEventListener(MOUSE_OUT, [&]()->void
-	{
-		m_pBackButton->setAlpha(255);
-	});
-	addChild(m_pBackButton);
-
-	// Next Button
-	m_pNextButton = new Button("../Assets/textures/nextButton.png", "nextButton", NEXT_BUTTON);
-	m_pNextButton->getTransform()->position = glm::vec2(500.0f, 400.0f);
-	m_pNextButton->addEventListener(CLICK, [&]()-> void
-	{
-		m_pNextButton->setActive(false);
-		//TheGame::Instance().changeSceneState(END_SCENE);
-		launch = true;
-	});
-
-	m_pNextButton->addEventListener(MOUSE_OVER, [&]()->void
-	{
-		m_pNextButton->setAlpha(128);
-	});
-
-	m_pNextButton->addEventListener(MOUSE_OUT, [&]()->void
-	{
-		m_pNextButton->setAlpha(255);
-	});
-
-	addChild(m_pNextButton);
+	//set variables
+	wookieX = m_pWookie->getTransform()->position.x;
+	wookieY = m_pWookie->getTransform()->position.y;
+	trooperX = m_pTrooper->getTransform()->position.x;
+	trooperY = m_pTrooper->getTransform()->position.y;
+	detonatorSpeed = meters_to_Pixels(detonatorSpeed, mtpScale);
 
 	/* Instructions Label */
 	m_pInstructionsLabel = new Label("Press the backtick (`) character to toggle Debug View", "Consolas");
-	m_pInstructionsLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 500.0f);
+	m_pInstructionsLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 200.0f);
 
 	addChild(m_pInstructionsLabel);
 
 	ImGuiWindowFrame::Instance().setGUIFunction(std::bind(&PlayScene::GUI_Function, this));
 }
 
-void PlayScene::GUI_Function() const
+void PlayScene::GUI_Function()
 {
 	// Always open with a NewFrame
 	ImGui::NewFrame();
@@ -165,23 +134,33 @@ void PlayScene::GUI_Function() const
 	// See examples by uncommenting the following - also look at imgui_demo.cpp in the IMGUI filter
 	//ImGui::ShowDemoWindow();
 	
-	ImGui::Begin("Change the variables here", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoMove);
+	
+
+	ImGui::Begin("Change the variables here.", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoMove);
+	ImGui::Text("1 pixel is equal to 2 meters");
+	ImGui::SliderFloat("wookieX", &wookieX, 0.0f, 775.0f, "%.3f");
+	ImGui::SliderFloat("wookieY", &wookieY, 0.0f, 550.0f, "%.3f");
+	ImGui::SliderFloat("trooperX", &trooperX, 0.0f, 775.0f, "%.3f");
+	ImGui::SliderFloat("trooperY", &trooperY, 0.0f, 550.0f, "%.3f");
+	ImGui::SliderFloat("detonatorSpeed", &detonatorSpeed, 1.0f, 100.0f, "%.3f");
+	ImGui::SliderFloat("throwArc", &throwArc, 1.0f, 90.0f, "%.3f");
+	ImGui::SliderFloat("gravity", &gravity, -1.0f, 1.0f, "%.3f");
+	
+	ImGui::Separator();
 
 	if(ImGui::Button("Launch"))
 	{
-		
+		launch = true;
 	}
 
-	ImGui::Separator();
-
-	static float float3[3] = { 0.0f, 1.0f, 1.5f };
-	if(ImGui::SliderFloat3("My Slider", float3, 0.0f, 2.0f))
+	if (ImGui::Button("Reset"))
 	{
-		std::cout << float3[0] << std::endl;
-		std::cout << float3[1] << std::endl;
-		std::cout << float3[2] << std::endl;
-		std::cout << "---------------------------\n";
+		launch = false;
 	}
+
+	
+
+	
 	
 	ImGui::End();
 }

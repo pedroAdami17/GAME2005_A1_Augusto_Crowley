@@ -16,6 +16,8 @@ public:
 	PlayScene();
 	~PlayScene();
 
+	float meters_to_Pixels(float meters, float scaleValue);
+
 	// Scene LifeCycle Functions
 	virtual void draw() override;
 	virtual void update() override;
@@ -24,7 +26,7 @@ public:
 	virtual void start() override;
 private:
 	// IMGUI Function
-	void GUI_Function() const;
+	void GUI_Function();
 	std::string m_guiTitle;
 	
 	glm::vec2 m_mousePosition;
@@ -40,9 +42,10 @@ private:
 	Label* m_pInstructionsLabel;
 
 	//Variables
-	float trooperDistance = 485.0f; //Multiply it by pixels per meter scale later
+	float mtpScale = 2.0f;
+	float trooperDistance = 485.0f;
 	float detonatorSpeed = 95.0f; //Multuply it by pixels per meter scale later
-	float detonatorMass = 2.2f; //This is in kiliograms so might have to change
+	float detonatorMass = 2.2f;
 	float wookieX;
 	float wookieY;
 	float detonatorX;
@@ -54,7 +57,7 @@ private:
 	float vx;
 	float vy;
 	float gameTime;
-	float throwArc = 50.0f; //Need to find the angle from the problem and store it here for now use a default value
+	float throwArc = 15.90f;
 	float gravity = 1.0f;
 	bool launch = false;
 
